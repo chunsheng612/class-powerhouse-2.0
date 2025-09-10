@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>班級經營動力站 v10.1 (穩定版)</title>
+    <title>班級經營動力站 v10.2 (穩定版)</title>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
 
@@ -59,6 +59,8 @@
       
       #class-dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
       .class-card { cursor: pointer; text-align: center; position: relative; }
+      .class-action-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.2em; cursor: pointer; padding: 5px; color: var(--text-color-secondary); z-index: 2; transition: color 0.2s; }
+      .class-action-btn:hover { color: var(--text-color-primary); }
       #add-class-card { border: 2px dashed rgba(0,0,0,0.2); font-size: 3em; display: flex; align-items: center; justify-content: center; color: var(--text-color-secondary); background: transparent; backdrop-filter: none; box-shadow: none; }
       
       .class-view-nav { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 25px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); border-radius: var(--control-border-radius); padding: 5px; border: 1px solid rgba(255,255,255,0.3); }
@@ -101,7 +103,7 @@
       #grades-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
       #grades-table th, #grades-table td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(0,0,0,0.1); }
       
-      .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); opacity: 0; transition: opacity 0.3s ease; }
+      .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); backdrop-filter: blur(5px); opacity: 0; transition: opacity 0.3s ease; }
       .modal.visible { display: flex; opacity: 1; }
       
       .side-tools-container { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); z-index: 1001; display: flex; flex-direction: column; gap: 15px; }
@@ -143,7 +145,7 @@
     
     <input type="file" id="file-input" style="display: none;" accept=".json">
     <a href="https://www.facebook.com/FunFun.AI.Teacher/" target="_blank" rel="noopener noreferrer" class="creator-credit">Created by 方方老師</a>
-    <audio id="timer-alarm" src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAB/3AAAAAAAQUVDAAAAAA//tAsAQUVDAAAAAAH/3AAAAAAAEVVVDAAAAAA//tA8AQUVDAAAAAA//tBMAQUVDAAAAAAH/3AAAAAAAMVVVDAAAAAA//tB0AQUVDAAAAAA//tCUAQUVDAAAAAAH/3AAAAAAANVVVDAAAAAA//tC8AQUVDAAAAAA//tDcAAAAAAAAAAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//QRA3AAANIAAAAAnRx//tAwRA3AAANIAAAAAnRx//tAsRA3AAANIAAAAAnRx//tA8RA3AAANIAAAAAnRx//tBMAAANIAAAAAnRx//tB0RA3AAANIAAAAAnRx//tCUAANIAAAAAnRx//tC8RA3AAANIAAAAAnRx//tDcRA3AAANIAAAAAnRx//tDkRA3AAANIAAAAAnRx//tEMRA3AAANIAAAAAnRx//tEcRA3AAANIAAAAAnRx//tEsRA3AAANIAAAAAnRx//tFAAAANIAAAAAnRx//tFREAANIAAAAAnRx//tFUAAANIAAAAAnRx//tFkRA3AAANIAAAAAnRx//tF8RA3AAANIAAAAAnRx//tGOAAANIAAAAAnRx//tGREAANIAAAAAnRx//tGUAAANIAAAAAnRx//tGkRA3AAANIAAAAAnRx//tG8RA3AAANIAAAAAnRx//tHOAAANIAAAAAnRx//tHREAAAANIAAAAAnRx//tHUAANIAAAAAnRx//tHkRA3AAANIAAAAAnRx//tH8RA3AAANIAAAAAnRx//tIAD/3/+A8D/3/8D/3//A/9//AP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="></audio>
+    <audio id="timer-alarm" src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU2LjQwLjEwMQAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAB/3AAAAAAAQUVDAAAAAA//tAsAQUVDAAAAAAH/3AAAAAAAEVVVDAAAAAA//tA8AQUVDAAAAAA//tBMAQUVDAAAAAAH/3AAAAAAAMVVVDAAAAAA//tB0AQUVDAAAAAA//tCUAQUVDAAAAAAH/3AAAAAAANVVVDAAAAAA//tC8AQUVDAAAAAA//tDcAAAAAAAAAAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//QRA3AAANIAAAAAnRx//tAwRA3AAANIAAAAAnRx//tAsRA3AAANIAAAAAnRx//tA8RA3AAANIAAAAAnRx//tBMAAANIAAAAAnRx//tB0RA3AAANIAAAAAnRx//tCUAANIAAAAAnRx//tC8RA3AAANIAAAAAnRx//tDcRA3AAANIAAAAAnRx//tDkRA3AAANIAAAAAnRx//tEMRA3AAANIAAAAAnRx//tEcRA3AAANIAAAAAnRx//tEsRA3AAANIAAAAAnRx//tFAAAANIAAAAAnRx//tFREAANIAAAAAnRx//tFUAAANIAAAAAnRx//tFkRA3AAANIAAAAAnRx//tF8RA3AAANIAAAAAnRx//tGOAAANIAAAAAnRx//tGREAANIAAAAAnRx//tGUAAANIAAAAAnRx//tGkRA3AAANIAAAAAnRx//tG8RA3AAANIAAAAAnRx//tHOAAANIAAAAAnRx//tHREAAAANIAAAAAnRx//tHUAANIAAAAAnRx//tHkRA3AAANIAAAAAnRx//tH8RA3AAANIAAAAAnRx//tIAD/3/+A8D/3/8D/3//A/9//AP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f/wP/f-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="></audio>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -187,7 +189,13 @@
         // --- 3. RENDER FUNCTIONS ---
         function renderDashboard() {
             const grid = document.getElementById('class-dashboard-grid'); grid.innerHTML = '';
-            appData.classes.forEach(cls => { const card = document.createElement('div'); card.className = 'card class-card'; card.dataset.id = cls.id; card.innerHTML = `<h3>${cls.name}</h3><p>${cls.students.length} 位學生</p>`; grid.appendChild(card); });
+            appData.classes.forEach(cls => {
+                const card = document.createElement('div');
+                card.className = 'card class-card';
+                card.dataset.id = cls.id;
+                card.innerHTML = `<h3>${cls.name}</h3><p>${cls.students.length} 位學生</p><button class="class-action-btn edit-class-btn" title="編輯班級">✏️</button>`;
+                grid.appendChild(card);
+            });
             const addCard = document.createElement('button'); addCard.id = 'add-class-card'; addCard.className = 'card'; addCard.textContent = '+'; grid.appendChild(addCard);
         }
         function renderClassView() {
@@ -201,7 +209,7 @@
             const grid = document.getElementById('student-grid');
             cls.students.sort((a,b) => a.id - b.id).forEach(s => { 
                 const card = document.createElement('div'); card.className = 'card student-card'; card.dataset.studentId = s.id;
-                card.innerHTML = `<div class="student-card-header"><span class="student-name">${s.id}. ${s.name}</span><button class="class-action-btn edit-student-btn" data-student-id="${s.id}">✏️</button></div><div class="student-score">${s.score}</div><div class="score-controls"><button class="btn btn-danger score-btn" data-amount="-1">-</button><button class="btn btn-success score-btn" data-amount="1">+</button></div>`; 
+                card.innerHTML = `<div class="student-card-header"><span class="student-name">${s.id}. ${s.name}</span><button class="class-action-btn edit-student-btn" data-student-id="${s.id}" title="編輯學生">✏️</button></div><div class="student-score">${s.score}</div><div class="score-controls"><button class="btn btn-danger score-btn" data-amount="-1">-</button><button class="btn btn-success score-btn" data-amount="1">+</button></div>`; 
                 grid.appendChild(card);
             });
         }
@@ -289,8 +297,18 @@
         function showAddEditClassModal(classId = null) {
             const modal = modals.class; modal.dataset.editingId = classId || '';
             const title = modal.querySelector('#class-modal-title'), nameInput = modal.querySelector('#class-name-input'), listInput = modal.querySelector('#student-list-input'), deleteBtn = modal.querySelector('#delete-class-btn');
-            if (classId) { const cls = appData.classes.find(c => c.id === classId); title.textContent = "編輯班級"; nameInput.value = cls.name; listInput.value = cls.students.map(s => `${s.id} ${s.name}`).join('\n'); deleteBtn.style.display = 'inline-block'; } 
-            else { title.textContent = "新增班級"; nameInput.value = ''; listInput.value = ''; deleteBtn.style.display = 'none'; }
+            if (classId) { 
+                const cls = appData.classes.find(c => c.id === classId); 
+                title.textContent = "編輯班級"; 
+                nameInput.value = cls.name; 
+                listInput.value = cls.students.map(s => `${s.id} ${s.name}`).join('\n'); 
+                deleteBtn.style.display = 'inline-block';
+            } else { 
+                title.textContent = "新增班級"; 
+                nameInput.value = ''; 
+                listInput.value = ''; 
+                deleteBtn.style.display = 'none'; 
+            }
             showModal('class');
         }
         function saveClass() {
@@ -307,6 +325,14 @@
                 appData.classes.push({ id: `C${Date.now()}`, name, students, homeworks: [], groupCount, groups }); 
             }
             saveData(); renderDashboard(); closeModal('class');
+        }
+        function deleteClass(classId) {
+            if (classId && confirm('確定要永久刪除這個班級嗎？所有相關的學生、作業和分數紀錄都將被清除。')) { 
+                appData.classes = appData.classes.filter(c => c.id !== classId); 
+                saveData(); 
+                renderDashboard(); 
+                closeModal('class'); 
+            } 
         }
         function showStudentModal(studentId = null) {
             const modal = modals.student; modal.dataset.editingId = studentId || '';
@@ -440,23 +466,23 @@
             const target = e.target;
             const closest = (selector) => target.closest(selector);
             
-            // --- Direct ID clicks ---
             const buttonId = target.id || (closest('.btn') && closest('.btn').id);
             if(buttonId) {
                 const actions = {
                     'add-class-card': () => showAddEditClassModal(), 'back-to-dashboard-btn': () => switchScreen('dashboard'),
                     'add-homework-btn': () => showModal('homework'), 'show-task-board-btn': renderTaskBoard,
                     'back-to-homework-list-btn': () => renderHomeworkList(getCurrentClass()), 'delete-homework-btn': () => { if (confirm('確定刪除作業？')) { const cls = getCurrentClass(); cls.homeworks = cls.homeworks.filter(hw => hw.id !== currentHomeworkId); saveData(); renderHomeworkList(cls); } },
-                    'random-group-btn': () => { const cls = getCurrentClass(); const shuffled = [...cls.students].sort(() => 0.5 - Math.random()); shuffled.forEach((s, i) => s.group = (i % cls.groupCount) + 1); saveData(); renderGroupingTab(cls); },
+                    'random-group-btn': () => { const cls = getCurrentClass(); const shuffled = [...cls.students].sort(() => 0.5 - Math.random()); shuffled.forEach((s, i) => s.group = (i % (cls.groupCount || 4)) + 1); saveData(); renderGroupingTab(cls); },
                     'calculate-grades-btn': calculateGrades, 'reset-scores-btn': resetScores,
                     'export-grades-btn': () => { let tsv = "姓名\t淨分\t平時分數\n"; getCurrentClass().students.forEach(s => { tsv += `${s.name}\t${s.score}\t${s.grade || '-'}\n`; }); navigator.clipboard.writeText(tsv).then(() => alert('成績已複製！')); },
-                    'save-class-btn': saveClass, 'delete-class-btn': () => { const id = modals.class.dataset.editingId; if (confirm('確定刪除班級？')) { appData.classes = appData.classes.filter(c => c.id !== id); saveData(); renderDashboard(); closeModal('class'); } },
+                    'save-class-btn': saveClass, 
+                    'delete-class-btn': () => deleteClass(modals.class.dataset.editingId),
                     'cancel-class-modal-btn': () => closeModal('class'),
-                    'confirm-add-homework-btn': () => { const title = document.getElementById('homework-title-input').value.trim(); if (!title) return; const cls = getCurrentClass(); cls.homeworks.unshift({ id: `H${Date.now()}`, title, date: new Date().toLocaleDateString('zh-TW'), studentStatus: cls.students.map(s => ({ id: s.id, status: 'pending' })) }); saveData(); renderHomeworkList(cls); closeModal('homework'); },
+                    'confirm-add-homework-btn': () => { const title = document.getElementById('homework-title-input').value.trim(); if (!title) return; const cls = getCurrentClass(); cls.homeworks.unshift({ id: `H${Date.now()}`, title, date: new Date().toLocaleDateString('zh-TW'), studentStatus: cls.students.map(s => ({ id: s.id, status: 'pending' })) }); saveData(); renderHomeworkList(cls); closeModal('homework'); document.getElementById('homework-title-input').value = ''; },
                     'cancel-add-homework-btn': () => closeModal('homework'), 'export-data-btn': () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(appData)], {type:'application/json'})); a.download = `班級動力站_備份_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(a.href); },
                     'load-data-btn': () => document.getElementById('file-input').click(),
                     'show-export-student-modal-btn': () => { const cls = getCurrentClass(); const dd = document.getElementById('student-select-dropdown'); dd.innerHTML = '<option value="">-- 請選擇學生 --</option>'; cls.students.sort((a,b)=>a.id-b.id).forEach(s => dd.innerHTML += `<option value="${s.id}">${s.id}. ${s.name}</option>`); document.getElementById('single-student-export-content').value = ''; showModal('studentExport'); },
-                    'copy-single-student-export-btn': () => { document.getElementById('single-student-export-content').select(); document.execCommand('copy'); alert('已複製！'); },
+                    'copy-single-student-export-btn': () => { const content = document.getElementById('single-student-export-content'); if(!content.value) return; content.select(); navigator.clipboard.writeText(content.value).then(() => alert('已複製！')); },
                     'close-export-student-modal-btn': () => closeModal('studentExport'),
                     'open-timer-tool-btn': () => toggleToolWidget('timer'), 'open-picker-tool-btn': () => toggleToolWidget('picker'),
                     'start-pause-timer-btn': startPauseTimer, 'reset-timer-btn': resetTimer, 'draw-student-btn': drawStudent,
@@ -484,7 +510,7 @@
                     showScoreFeedback(studentCard, amount);
                 }
             }
-            else if (closest('.edit-student-btn')) { e.stopPropagation(); showStudentModal(closest('.student-card').dataset.studentId); }
+            else if (closest('.edit-student-btn')) { e.stopPropagation(); showStudentModal(closest('.edit-student-btn').dataset.studentId); }
             else if (closest('.homework-card')) { currentHomeworkId = closest('.homework-card').dataset.id; renderHomeworkTracking(); }
             else if (closest('.student-status-item')) { const hw = getCurrentClass().homeworks.find(h => h.id === currentHomeworkId); const s = hw.studentStatus.find(s => s.id === closest('.student-status-item').dataset.id); if(s){ s.status = STATUS_ORDER[(STATUS_ORDER.indexOf(s.status)+1)%4]; saveData(); renderHomeworkTracking(); }}
             else if (closest('.timer-presets .btn')) { timeLeftInSeconds = parseInt(closest('.btn').dataset.minutes) * 60; updateTimerDisplay(); }
@@ -503,10 +529,10 @@
         
         document.getElementById('file-input').addEventListener('change', (e) => loadAllData(e));
         document.getElementById('student-select-dropdown').addEventListener('change', () => { const id = document.getElementById('student-select-dropdown').value; const ta = document.getElementById('single-student-export-content'); if(!id) {ta.value=''; return;} const cls = getCurrentClass(), si = cls.students.find(s=>s.id===id); let tasks = []; cls.homeworks.forEach(hw => { const ss = hw.studentStatus.find(s=>s.id===id); if(['pending', 'needs_correction'].includes(ss.status)) tasks.push(`- ${hw.title} (${STATUS_TEXT[ss.status]})`); }); ta.value = `--- ${si.name} 的未完成項目 ---\n\n` + (tasks.length ? tasks.join('\n') : "🎉 恭喜！沒有未完成項目！"); });
-        document.addEventListener('change', (e) => { if(e.target.id === 'group-count-input') { const cls = getCurrentClass(); cls.groupCount = parseInt(e.target.value); cls.groups = Array.from({length: cls.groupCount}, (_, i) => ({id: i+1, score: 0})); saveData(); renderGroupingTab(cls); }});
+        document.addEventListener('change', (e) => { if(e.target.id === 'group-count-input') { const cls = getCurrentClass(); cls.groupCount = parseInt(e.target.value) || 4; cls.groups = Array.from({length: cls.groupCount}, (_, i) => ({id: i+1, score: 0})); saveData(); renderGroupingTab(cls); }});
         document.addEventListener('dragstart', (e) => { if(e.target.matches('.student-chip')) draggedStudentId = e.target.dataset.studentId; });
         document.addEventListener('dragover', (e) => e.preventDefault());
-        document.addEventListener('drop', (e) => { const col = e.target.closest('.group-column, #unassigned-students-column'); if(col) { const gId = col.id==='unassigned-students-column' ? null : parseInt(col.dataset.groupId); const s = getCurrentClass().students.find(st=>st.id===draggedStudentId); if(s) {s.group=gId; saveData(); renderGroupingTab(getCurrentClass());}}});
+        document.addEventListener('drop', (e) => { e.preventDefault(); const col = e.target.closest('.group-column, #unassigned-students-column'); if(col && draggedStudentId) { const gId = col.id==='unassigned-students-column' ? null : parseInt(col.dataset.groupId); const s = getCurrentClass().students.find(st=>st.id===draggedStudentId); if(s) {s.group=gId; saveData(); renderGroupingTab(getCurrentClass());}} draggedStudentId = null; });
         
         // --- INIT ---
         loadData(); renderDashboard(); switchScreen('dashboard');
